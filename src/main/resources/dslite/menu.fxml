@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dslite.controllers.MenuController">
+    <children>
+        <StackPane onMouseDragged="#handleDragEvent" onMousePressed="#handlePressEvent" prefHeight="24.0" prefWidth="625.0">
+            <children>
+                <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT">
+                    <image>
+                        <Image url="@gui/icon.png" />
+                    </image>
+                    <StackPane.margin>
+                        <Insets left="5.0" />
+                    </StackPane.margin>
+                </ImageView>
+                <Label alignment="CENTER" mouseTransparent="true" prefHeight="18.0" prefWidth="98.0" text="Don't Starve Lite">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <HBox id="header" alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="22.0" prefWidth="58.0">
+                    <children>
+                        <Group>
+                            <children>
+                                <Rectangle fill="#ffffff00" height="20.0" onMouseClicked="#closeApp" strokeWidth="2.0" styleClass="button" width="20.0" />
+                                <Line endX="-5.0" endY="-5.0" layoutX="10.0" layoutY="10.0" mouseTransparent="true" startX="5.0" startY="5.0" strokeWidth="1.5" />
+                                <Line endX="5.0" endY="-5.0" layoutX="10.0" layoutY="10.0" mouseTransparent="true" startX="-5.0" startY="5.0" strokeWidth="1.5" />
+                            </children>
+                        </Group>
+                        <Group>
+                            <children>
+                                <Rectangle fx:id="minBtn" fill="TRANSPARENT" height="20.0" onMouseClicked="#minimize" strokeWidth="2.0" styleClass="button" width="20.0" />
+                                <Line endX="5.0" layoutX="10.0" layoutY="10.0" mouseTransparent="true" startX="-5.0" strokeWidth="1.5" />
+                            </children>
+                        </Group>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </HBox>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <padding>
+                <Insets bottom="2.0" />
+            </padding>
+        </StackPane>
+        <Label alignment="CENTER" layoutX="8.0" layoutY="33.0" prefHeight="47.0" prefWidth="600.0" text="World Settings" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="33.0">
+            <font>
+                <Font name="System Bold" size="32.0" />
+            </font>
+        </Label>
+          <Line endX="305.0" layoutX="300.5" layoutY="80.0" startX="-280.0" />
+        <VBox layoutX="58.0" layoutY="105.0" prefHeight="181.0" prefWidth="627.0" spacing="20.0" AnchorPane.leftAnchor="58.0" AnchorPane.rightAnchor="58.0">
+            <children>
+                <HBox fx:id="wSizeBox" spacing="100.0">
+                    <children>
+                        <Label contentDisplay="TOP" prefHeight="47.0" prefWidth="192.0" text="World Size:">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox fx:id="bSizeBox" spacing="100.0">
+                    <children>
+                        <Label contentDisplay="TOP" prefHeight="47.0" prefWidth="192.0" text="Biome Size:">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox spacing="20.0">
+                    <children>
+                        <Label contentDisplay="TOP" prefHeight="47.0" prefWidth="84.0" text="Seed:">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="seedField" focusTraversable="false" prefHeight="47.0" prefWidth="380.0" promptText="Leave blank for random">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Button fx:id="generateBtn" focusTraversable="false" layoutX="237.0" layoutY="331.0" mnemonicParsing="false" onAction="#startGame" prefHeight="47.0" prefWidth="127.0" text="Generate!" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="236.0" />
+    </children>
+</AnchorPane>

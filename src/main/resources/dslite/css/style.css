@@ -1,0 +1,26 @@
+/*
+A menüben használt CSS formázás
+ */
+
+AnchorPane {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: lightgray;
+    -fx-border-width: 2px;
+}
+
+StackPane {
+    -fx-background-color: lightgray;
+}
+
+.button:hover {
+    -fx-fill: white;
+}
+
+.div {
+    -fx-padding: 5px;
+    -fx-border-insets: 20px 20px 0px 20px;
+    -fx-background-insets: 20px 20px 0px 20px;
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
