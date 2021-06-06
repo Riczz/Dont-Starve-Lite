@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 /**
- * A craft menüben megjelenő lista egy eleme.
+ * An element inside the {@link ItemList} of the {@link CraftingView}.
  */
 public final class ListElement extends ListCell<ItemType> {
 
@@ -17,9 +17,6 @@ public final class ListElement extends ListCell<ItemType> {
     private final ImageView icon = new ImageView();
     private final Label label = new Label();
 
-    /**
-     * A listaelem konstruktora.
-     */
     public ListElement() {
         super();
         setMaxHeight(64.0);
@@ -37,11 +34,6 @@ public final class ListElement extends ListCell<ItemType> {
         container.getChildren().addAll(icon, pane);
     }
 
-    /**
-     * Új listaelem hozzáadásakor beállítja képnek a típushoz tartozó ikont,
-     * és kiírja mellette a nevét.
-     * @param type A listaelem által tárolt ItemType
-     */
     @Override
     protected void updateItem(ItemType type, boolean empty) {
         super.updateItem(type, empty);

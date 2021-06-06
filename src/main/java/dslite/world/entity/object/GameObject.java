@@ -5,8 +5,8 @@ import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
 /**
- * A játékban előforduló Tile-okon megjelenő objektumokat írja le,
- * Ezekkel különböző interakciókat tud végezni a játékos.
+ * Describes the visible objects on the map.
+ * All of the game objects are stored within a {@link TileWithObject}.
  */
 public abstract class GameObject {
 
@@ -16,10 +16,9 @@ public abstract class GameObject {
     protected byte quantity;
 
     /**
-     * A GameObject konstruktora.
+     * Constructs a game object.
      *
-     * @param type A hozzá tartozó ObjectType
-     * @see ObjectType
+     * @param type type of the object
      */
     protected GameObject(ObjectType type) {
         this.type = type;
@@ -28,10 +27,10 @@ public abstract class GameObject {
     }
 
     /**
-     * Konstruktor, ami az őt tartalmazó mezőt is beállítja
+     * Constructs a game object and also sets the owner tile.
      *
-     * @param type A hozzá tartozó ObjectType
-     * @param tile A hozzá tartozó mező referenciája
+     * @param type type of the object
+     * @param tile reference of the tile
      */
     protected GameObject(ObjectType type, TileWithObject tile) {
         this(type);
@@ -39,9 +38,9 @@ public abstract class GameObject {
     }
 
     /**
-     * Konstruktor, ami index alapján készíti el az objektumot.
+     * Constructs a game object by id.
      *
-     * @param index A GameObjecthez tartozó index
+     * @param index the object id
      * @see ObjectType
      */
     protected GameObject(int index) {

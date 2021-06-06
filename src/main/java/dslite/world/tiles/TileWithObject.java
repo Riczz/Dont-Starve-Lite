@@ -1,14 +1,15 @@
 package dslite.world.tiles;
 
 import dslite.world.biomes.Point;
+import dslite.world.entity.Sprite;
 import dslite.world.entity.Textures;
 import dslite.world.entity.object.GameObject;
 import dslite.world.entity.object.ObjectInfo;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Kiterjesztett Tile osztály
- * Eltárolja pluszban a tartalmazott GameObjectet és a mező pozícióját.
+ * Class describing a game field with a specific {@link GameObject} inside.
+ * Also stores the tile's position on the map.
  *
  * @see Tile
  * @see GameObject
@@ -19,10 +20,11 @@ public final class TileWithObject extends Tile {
     private final Point pos;
 
     /**
-     * A mező konstruktora
-     * @param type A Tile típusa
-     * @param pos A mező pozíciója a tilemapben
-     * @param objIndex A tartalmazott GameObject indexe
+     * Constructor for the tile.
+     * @param type type of the tile
+     * @param pos position on the map
+     * @param objIndex id of the stored {@link GameObject}
+     * @see ObjectInfo
      */
     public TileWithObject(TileType type, Point pos, int objIndex) {
         super(type);

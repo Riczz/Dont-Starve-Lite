@@ -1,6 +1,7 @@
 package dslite.gui.crafting;
 
 import dslite.controllers.GameController;
+import dslite.world.entity.item.Item;
 import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import javafx.collections.FXCollections;
@@ -14,16 +15,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * A crafting menüt leíró osztály.
- * A fő képernyőn bal oldalt jelenik meg, különböző menüpontokban
- * tartalmazza a craftolható elemek listáját.
+ * GUI class for the crafting menu.
+ * It appears on the left side of the game screen
+ * containing a list of the craftable items.
  *
  * @see ItemList
  */
 public final class CraftingView extends VBox {
 
     /**
-     * A listában jelenleg kiválasztott elem típusa.
+     * Type of the currently selected {@link Item}.
      *
      * @see ItemList
      * @see ItemType
@@ -32,13 +33,7 @@ public final class CraftingView extends VBox {
 
     private TabPane tabPane;
     private Button craftBtn;
-    private ObservableList<ItemType> tools;
-    private ObservableList<ItemType> survival;
 
-    /**
-     * A crafting menü konstruktora.
-     * Létrehozza  a listát és a craft gombot.
-     */
     public CraftingView() {
         super();
         initTabPane();
@@ -54,10 +49,6 @@ public final class CraftingView extends VBox {
         getChildren().addAll(tabPane, new StackPane(craftBtn));
     }
 
-    /**
-     * A listákat tartalmazó TabPane beállításáért felelős metódus.
-     * Feltölti elemekkel, megtiltja a bezárást, és a fókuszt.
-     */
     private void initTabPane() {
         tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -66,13 +57,13 @@ public final class CraftingView extends VBox {
         tabPane.setFocusTraversable(false);
         tabPane.setSide(Side.LEFT);
 
-        tools = FXCollections.observableArrayList(
+        ObservableList<ItemType> tools = FXCollections.observableArrayList(
                 ItemType.AXE,
                 ItemType.PICKAXE
         );
         Tab toolsTab = new Tab("Tools", new ItemList(tools, this));
 
-        survival = FXCollections.observableArrayList(
+        ObservableList<ItemType> survival = FXCollections.observableArrayList(
                 ItemType.GARLAND,
                 ItemType.CAMPFIRE
         );
@@ -80,9 +71,6 @@ public final class CraftingView extends VBox {
         tabPane.getTabs().addAll(toolsTab, survivalTab);
     }
 
-    /**
-     * A Craft gombot beállító metódus.
-     */
     private void initCraftBtn() {
         craftBtn = new Button("Craft");
         craftBtn.setTooltip(new Tooltip("Craft the selected item"));
@@ -93,9 +81,8 @@ public final class CraftingView extends VBox {
     }
 
     /**
-     * A nézet frissítése.
-     * Leellenőrzi, hogy a játékos képes az Inventoryja alapján lecraftolni a
-     * jelenleg kiválasztott itemet, és az alapján állítja be a Craft gomb állapotát.
+     * Checks if the player is able to craft the currently selected item and
+     * sets the state of the craft button according to the result.
      */
     public void update() {
         if (selectedType != null) {

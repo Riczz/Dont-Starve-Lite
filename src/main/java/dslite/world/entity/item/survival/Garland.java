@@ -9,23 +9,18 @@ import dslite.world.entity.item.ItemType;
 
 import java.util.Map;
 
-/**
- * A virágkoszorú Itemet leíró osztály
- */
 public final class Garland extends Item implements Craftable, Updatable {
 
-    private int health = 15 * World.DAY_LENGTH;
+    //Durability
+    private int durability = 15 * World.DAY_LENGTH;
 
     public Garland() {
         super(ItemType.GARLAND);
     }
 
-    /**
-     * Ha 15 nap eltelt a készítése óta, törli magát az Inventoryból.
-     */
     @Override
     public void update() {
-        if (--health <= 0) {
+        if (--durability <= 0) {
             GameController.getPlayer().getInventory().removeItem(this);
         }
     }

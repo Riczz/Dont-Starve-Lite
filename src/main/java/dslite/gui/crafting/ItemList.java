@@ -6,12 +6,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 /**
- * A crafting menüben megjelenő listákat megvalósító osztály.
- * Egyedi CellFactory-t állít be.
+ * The list inside the {@link CraftingView}.
  *
+ * @see ListElement
  * @see javafx.scene.control.Cell
  * @see javafx.scene.control.ListCell
- * @see ListElement
  */
 public final class ItemList extends ListView<ItemType> {
 

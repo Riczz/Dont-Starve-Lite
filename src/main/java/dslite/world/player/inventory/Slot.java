@@ -5,8 +5,7 @@ import dslite.world.entity.item.ItemInfo;
 import dslite.world.entity.item.ItemType;
 
 /**
- * A játékos eszköztárában található Slotot
- * reprezentáló osztály.
+ * Represents a slot in the player's inventory
  */
 public final class Slot {
 
@@ -16,14 +15,11 @@ public final class Slot {
     private byte stackSize;
     private boolean full;
 
-    protected Slot() {
+    Slot() {
         init();
     }
 
-    /**
-     * Beállítja a slotot a kezdeti értékre ("üres").
-     */
-    protected void init() {
+    void init() {
         stackSize = Inventory.STACK_SIZE;
         storedItem = null;
         storedItemType = null;
@@ -32,10 +28,10 @@ public final class Slot {
     }
 
     /**
-     * Megpróbál hozzáadni a slothoz adott mennyiségű itemet.
+     * Tries to add a specific quantity of the stored item to the slot.
      *
-     * @param count A hozzáadni kívánt mennyiség.
-     * @return Hány darabot sikerült ténylegesen hozzáadni.
+     * @param count the number of items to add
+     * @return number of items successfully added
      */
     public int add(int count) {
         int initialSize = getItemCount();
@@ -50,9 +46,8 @@ public final class Slot {
     }
 
     /**
-     * Megvizsgálja, hogy az eltárolt mennyiség kívül esik-e a Slot méretén,
-     * és ha kívül esik, beállítja a méretet ennek megfelelően.
-     * Ha a méret 0, vagy annál kisebb, akkor törli a slotot.
+     * Removes the stored {@link Item} if the quanity is {@code 0},<br/>
+     * or sets {@code full} to {@code true} if the slot is full.
      */
     private void update() {
         if (getItemCount() <= 0) {
@@ -63,7 +58,11 @@ public final class Slot {
         }
     }
 
-    protected void setStoredItem(ItemType itemType) {
+    /**
+     * Sets the currently stored item by the slot.
+     * @param itemType the {@link ItemType} of the stored item.
+     */
+    void setStoredItem(ItemType itemType) {
         init();
         storedItemType = itemType;
         storedItem = ItemInfo.getItem(itemType);

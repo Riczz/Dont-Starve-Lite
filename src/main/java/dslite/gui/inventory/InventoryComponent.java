@@ -1,6 +1,7 @@
 package dslite.gui.inventory;
 
 import dslite.controllers.GameController;
+import dslite.gui.crafting.CraftingView;
 import dslite.world.player.Player;
 import dslite.world.player.inventory.Inventory;
 import dslite.world.player.inventory.Slot;
@@ -10,10 +11,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 /**
- * A játékos Inventoryját megjelenítő osztály.
+ * GUI class for displaying the {@link Inventory}.
  *
  * @see Player
- * @see Inventory
  * @see Slot
  */
 public final class InventoryComponent extends StackPane {
@@ -38,15 +38,13 @@ public final class InventoryComponent extends StackPane {
         initSlots();
     }
 
-
     /**
-     * A nézet frissítésére szolgáló metódus.
-     * Az Inventoryból hívódik meg, ha változik a tartalma.
-     * A jelenleg kiválasztott Slotot piros színnel jeleníti meg.
-     * Frissíti a Craft nézetet is.
+     * Updates the contents of the inventory.<br/>
+     * Gets called whenever the state of the inventory changes.
+     * The currently selected item will be displayed with red color.<br/>
+     * Also updates the {@link CraftingView}.
      *
      * @see Inventory
-     * @see dslite.gui.crafting.CraftingView
      */
     public void update() {
         Inventory inv = player.getInventory();
@@ -63,15 +61,9 @@ public final class InventoryComponent extends StackPane {
             }
         }
 
-        //Craft lista frissítése
         controller.getCraftingView().update();
     }
 
-    /**
-     * A HBox-ban megjelenő Slotokat inicializáló metódus.
-     *
-     * @see InventoryItem
-     */
     private void initSlots() {
         items = new InventoryItem[Inventory.INV_SIZE];
         for (int i = 0; i < Inventory.INV_SIZE; i++) {

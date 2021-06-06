@@ -1,6 +1,7 @@
 package dslite.world.player;
 
 import dslite.controllers.GameController;
+import dslite.gui.crafting.CraftingView;
 import dslite.gui.inventory.InventoryComponent;
 import dslite.world.GameState;
 import dslite.world.Updatable;
@@ -19,9 +20,6 @@ import dslite.world.tiles.Tile;
 import dslite.world.tiles.TileWithObject;
 import javafx.scene.image.Image;
 
-/**
- * A játékost leíró osztály.
- */
 public final class Player implements Updatable {
 
     public static final Image IMG = Textures.getTexture(new Sprite(1));
@@ -43,9 +41,6 @@ public final class Player implements Updatable {
     private WorldMap map;
     private World world;
 
-    /**
-     * Beállítja a játékos értékeit a maximumra.
-     */
     public Player() {
         health = MAX_HEALTH;
         sanity = MAX_SANITY;
@@ -53,10 +48,6 @@ public final class Player implements Updatable {
         actionPoints = World.AP_DAY;
     }
 
-    /**
-     * Beállítja a játékos értékeit, és hozzárendeli a játékoshoz a világot.
-     * @param world A hozzárendelt Világ
-     */
     public Player(World world) {
         this();
         this.world = world;
@@ -68,9 +59,6 @@ public final class Player implements Updatable {
         setPos(map.getSpawnPoint());
     }
 
-    /**
-     * Játékos állapotát frissítő metódus.
-     */
     @Override
     public void update() {
 
@@ -87,7 +75,7 @@ public final class Player implements Updatable {
     }
 
     /**
-     * Interakció a játékos jelenlegi pozícióján lévő Tile-al.
+     * Tries to interact with the {@link Tile} at the player's current position.
      *
      * @see TileWithObject
      */
@@ -98,9 +86,8 @@ public final class Player implements Updatable {
     }
 
     /**
-     * A játékos kezében lévő Item eldobása.
-     * Mindig a kézben tartott mennyiségnek megfelelő darabszám dobódik el.
-     * Csak akkor működik, ha a kézben tartott Item eldobható, és a jelenlegi mező üres.
+     * Drops the currently selected {@link Item} in the inventory.
+     * Only works if the item is placeable.
      *
      * @see ObjectInfo
      */
@@ -121,10 +108,10 @@ public final class Player implements Updatable {
     }
 
     /**
-     * Elmozdulás a pályán.
+     * Moves the player on the map.
      *
-     * @param x Lépés száma vízszintes irányban
-     * @param y Lépés száma függőleges irányban
+     * @param x no. of steps horizontally
+     * @param y no. of steps vertically
      */
     public void move(byte x, byte y) {
         if (!tilemap[posX + x][posY + y].getType().isSolid()) {
@@ -134,11 +121,6 @@ public final class Player implements Updatable {
         }
     }
 
-    /**
-     * A játékos eszik metódusa.
-     *
-     * @see Food
-     */
     public void eat() {
         Item item = getEquippedItem();
         if (item == null) return;
@@ -151,11 +133,11 @@ public final class Player implements Updatable {
     }
 
     /**
-     * A paraméterben átadott Itemet megpróbálja lecraftolni az Inventory alapján.
-     * Ha a craftolás sikeres, 1 cselekvéspont levonódik.
+     * Tries to craft the specified {@link ItemType}.
+     * If the operation was successful, AP gets reduced by {@code 1}.
      *
-     * @param item A craftolni kívánt Item.
-     * @return igaz ha sikerült, hamis ha nem
+     * @param item the item to be crafted
+     * @return {@code true} if the crafting was successful, {@code false} if not
      * @see Inventory
      */
     public boolean craft(ItemType item) {
@@ -167,11 +149,11 @@ public final class Player implements Updatable {
     }
 
     /**
-     * Visszaadja, hogy a játékos képes-e lecraftolni a megadott Itemet az Inventory alapján.
-     * A Craft nézetnél fontos, hogy tudjuk.
+     * Checks if the player is able to craft the specified Item based on the state of the inventory.<br/>
+     * This function is important for the {@link CraftingView}.
      *
-     * @param item Az ellenőrizni kívánt Item
-     * @return Le tudja-e craftolni
+     * @param item the item to check
+     * @return does the player has all the required items for crafting
      * @see dslite.gui.crafting.CraftingView
      * @see dslite.gui.crafting.ItemList
      */
@@ -180,21 +162,20 @@ public final class Player implements Updatable {
     }
 
     /**
-     * Megnézi, hogy a játékos Inventoryjában szerepel-e a megadott Item.
+     * Checks if the player has the specified {@link Item} inside their inventory.
      *
-     * @param item A keresett Item
-     * @return Szerepel-e az inventoryban
+     * @param item the searched item
+     * @return {@code true} if present, {@code false} if not
      */
     public boolean hasItem(ItemType item) {
         return getInventory().getItemCountFor(item) >= 1;
     }
 
     /**
-     * Cselekvéspontok hozzáadása.
-     * Csak negatív értékeket fogad el.
-     * Cselekvéspontonként az éhség 0.4-del csökken.
+     * Gets called when the player spends a certain amount of AP.<br/>
+     * Only accepts negative values.
      *
-     * @param actionPoints Elvett cselekvéspontok száma
+     * @param actionPoints the amount of AP spent
      */
     public void addActionPoints(byte actionPoints) {
         if (actionPoints >= 0) return;
@@ -221,36 +202,11 @@ public final class Player implements Updatable {
 
     }
 
-    /**
-     * Visszaadja a jelenleg kiválasztott Inventory slotban található Itemet.
-     *
-     * @return A kiválasztott Item
-     */
-    public Item getEquippedItem() {
-        return getInventory().getSelectedSlot().getStoredItem();
+    private void setPos(Point p) {
+        this.posX = p.getX();
+        this.posY = p.getY();
     }
 
-    /**
-     * Visszaadja, hogy a jelenleg kiválasztott Itemből hány darab van a játékosnál.
-     *
-     * @return Az eltárolt darabszám
-     */
-    public int getEquippedItemCount() {
-        return getInventory().getSelectedSlot().getItemCount();
-    }
-
-    /**
-     * Törli a jelenleg kiválasztott slotban található Itemet.
-     */
-    public void removeEquippedItem() {
-        getInventory().removeSlot(getInventory().getSelectedSlot());
-    }
-
-    /**
-     * Élet hozzáadása.
-     *
-     * @param val hozzáadni kívánt mennyiség
-     */
     public void addHealth(float val) {
         if (val < 0) {
             health = Math.max(health + val, 0.0f);
@@ -259,11 +215,6 @@ public final class Player implements Updatable {
         }
     }
 
-    /**
-     * Agy hozzáadása.
-     *
-     * @param val hozzáadni kívánt mennyiség
-     */
     public void addSanity(float val) {
         if (val < 0) {
             sanity = Math.max(sanity + val, 0.0f);
@@ -272,11 +223,6 @@ public final class Player implements Updatable {
         }
     }
 
-    /**
-     * Éhség hozzáadása.
-     *
-     * @param val hozzáadni kívánt mennyiség
-     */
     public void addHunger(float val) {
         if (val < 0) {
             hunger = Math.max(hunger + val, 0.0f);
@@ -285,14 +231,16 @@ public final class Player implements Updatable {
         }
     }
 
-    /**
-     * Játékos pozíciójának beállítása
-     *
-     * @param p A pozíció
-     */
-    private void setPos(Point p) {
-        this.posX = p.getX();
-        this.posY = p.getY();
+    public Item getEquippedItem() {
+        return getInventory().getSelectedSlot().getStoredItem();
+    }
+
+    public int getEquippedItemCount() {
+        return getInventory().getSelectedSlot().getItemCount();
+    }
+
+    public void removeEquippedItem() {
+        getInventory().removeSlot(getInventory().getSelectedSlot());
     }
 
     private void setTile(TileWithObject tile) {

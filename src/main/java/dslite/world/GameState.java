@@ -1,7 +1,7 @@
 package dslite.world;
 
 /**
- * A napszakot leíró enum
+ * This enum describes the possible game states.
  */
 public enum GameState {
     DAY,

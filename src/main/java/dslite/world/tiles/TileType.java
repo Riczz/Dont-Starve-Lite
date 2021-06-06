@@ -3,7 +3,7 @@ package dslite.world.tiles;
 import javafx.scene.paint.Color;
 
 /**
- * A játékban található mezőket leíró enum.
+ * Enum that stores the possible Tile types.
  */
 public enum TileType {
     WATER(Color.AQUA, true),
@@ -14,13 +14,13 @@ public enum TileType {
     SAVANNA(Color.GOLD, false),
     SAND(Color.MOCCASIN, false);
 
-    Color color;
-    boolean isSolid;
+    private final Color color;
+    private final boolean isSolid;
 
     /**
-     * A mező típus konstruktora.
-     * @param color A mező színe
-     * @param isSolid Szolid-e
+     * Constructor for a tile type.
+     * @param color color of the {@link Tile}
+     * @param isSolid {@code true} if solid, {@code false} if not
      */
     TileType(Color color, boolean isSolid) {
         this.color = color;

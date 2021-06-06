@@ -6,29 +6,16 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * A játékban használt textúrák betöltését végrehajtó Singleton osztály.
- * A WorldMap osztály használja fel.
- *
- * @see dslite.world.WorldMap
+ * This class loads the texture resources used by the game.
  */
 public final class Textures {
 
-    /**
-     * A útvonalakat, és az indexeket tartalmazó HashMap
-     */
     private static HashMap<Integer, String> texturePaths;
 
-    /**
-     * A kéepeket, és az indexeket tartalmazó HashMap
-     */
     private static HashMap<Integer, Image> textures;
 
     private static Textures instance = null;
 
-    /**
-     * A textúrákhoz tartozó útvonalakhoz indexet rendel,
-     * majd ezekhez hozzátársítja a képeket.
-     */
     private Textures() {
 
         texturePaths = new HashMap<>();
@@ -98,17 +85,9 @@ public final class Textures {
             return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
         }
 
-        //Ha nem jó az elérési útvonal megpróbáljuk az elsőt visszaadni.
         return new Image(texturePaths.get(0));
     }
-
-    /**
-     * Spritehoz tartozó kép visszaadása
-     *
-     * @param sprite A sprite
-     * @return A Spritehoz tartozó kép
-     * @see Sprite
-     */
+    
     public static Image getTexture(Sprite sprite) {
         return textures.get(sprite.getIndex());
     }

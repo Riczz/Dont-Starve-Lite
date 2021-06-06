@@ -22,10 +22,7 @@ import javafx.stage.StageStyle;
 import java.util.EventListener;
 
 /**
- * A játékot irányító kontroller osztály.
- * Tartalmazza a világ, játékos, és a térkép referenciáit,
- * és a nézethez kapcsolódó osztályokét is.
- * Összeköti a játékot a nézettel.
+ * Controller for the game screen.
  *
  * @see World
  * @see WorldMap
@@ -51,11 +48,6 @@ public final class GameController implements EventListener {
 
     private EventHandler<KeyEvent> keyHandler;
 
-    /**
-     * Az ablak megnyitásakor automatikusan lefutó metódus.
-     * Feltölti az ablakot a nézethez tartozó osztályokkal.
-     * Létrehozza a világot, a játékost, és átadja a referenciákat az azokhoz tartozó nézet elemhez.
-     */
     @FXML
     public void initialize() {
 
@@ -79,7 +71,7 @@ public final class GameController implements EventListener {
     }
 
     /**
-     * Beállítja az eseménykezelőt a billentyűzet gombjaihoz.
+     * Sets the event handlers for keyboard buttons.
      *
      * @see Player
      * @see KeyEvent
@@ -89,58 +81,51 @@ public final class GameController implements EventListener {
             KeyCode code = keyEvent.getCode();
 
             switch (code) {
-                case DIGIT1:
-                case DIGIT2:
-                case DIGIT3:
-                case DIGIT4:
-                case DIGIT5:
-                case DIGIT6:
-                case DIGIT7:
-                case DIGIT8:
-                case DIGIT9: {
-                    player.getInventory().setSelectedSlot(Integer.parseInt(code.getChar()) - 1);
-                    break;
-                }
-                case W: {                                           //Elmozdulás felfelé
+                case W: {                                           //Move up
                     player.move((byte) 0, (byte) -1);
                     break;
                 }
-                case A: {                                           //Elmozdulás balra
+                case A: {                                           //Move left
                     player.move((byte) -1, (byte) 0);
                     break;
                 }
-                case S: {                                           //Elmozdulás lefelé
+                case S: {                                           //Move down
                     player.move((byte) 0, (byte) 1);
                     break;
                 }
-                case D: {                                           //Elmozdulás jobbra
+                case D: {                                           //Move right
                     player.move((byte) 1, (byte) 0);
                     break;
                 }
-                case T: {                                           //Várakozás
+                case T: {                                           //Wait
                     player.move((byte) 0, (byte) 0);
                     break;
                 }
-                case SPACE: {                                       //Interakció
+                case SPACE: {                                       //Interact
                     player.interact();
                     break;
                 }
-                case E: {                                           //Evés
+                case E: {                                           //Eat
                     player.eat();
                     break;
                 }
-                case F: {                                           //Kézben tartott Item lerakása
+                case F: {                                           //Place down current item in hand
                     player.place();
                     break;
                 }
-                case X: {                                           //Kézben tartott Item törlése
+                case X: {                                           //Remove current item in hand
                     player.removeEquippedItem();
                     break;
                 }
+                default: {                                          //Select inventory slot
+                    if (code.isDigitKey()) {
+                        player.getInventory().setSelectedSlot(Integer.parseInt(code.getChar()) - 1);
+                        break;
+                    }
+                }
             }
 
-            //Nézet és világ frissítése
-            //Nem a legjobb megoldás így, de mind1
+            //TODO: Organize this somehow
             world.update();
             grid.update();
             player.update();
@@ -149,9 +134,6 @@ public final class GameController implements EventListener {
         mainPane.setOnKeyPressed(keyHandler);
     }
 
-    /**
-     * A játék végét lekezelő metódus.
-     */
     public void endGame() {
         disableView();
 
@@ -164,9 +146,6 @@ public final class GameController implements EventListener {
         alert.showAndWait().ifPresent(response -> mainPane.getScene().getWindow().hide());
     }
 
-    /**
-     * Letiltja a képernyőn található elemeket.
-     */
     private void disableView() {
         grid.setDisable(true);
         inv.setDisable(true);
@@ -175,9 +154,6 @@ public final class GameController implements EventListener {
         mainPane.getScene().removeEventHandler(KeyEvent.ANY, keyHandler);
     }
 
-    /**
-     * Engedélyezi a képernyőn található elemeket.
-     */
     private void enableView() {
         grid.setDisable(false);
         grid.setFocusTraversable(true);

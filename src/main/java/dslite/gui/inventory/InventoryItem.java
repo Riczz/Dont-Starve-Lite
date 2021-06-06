@@ -16,9 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- * A Inventory nézetben megjelenő slotok kinézetét írja le.
- *
- * @see Slot
+ * GUI class for the inventory {@linkplain Slot}s.
  */
 public final class InventoryItem extends StackPane {
 
@@ -39,11 +37,6 @@ public final class InventoryItem extends StackPane {
         getChildren().addAll(item, itemCount);
     }
 
-    /**
-     * Beállítja a kinézetet az adott slotnak megfelelő adatokkal.
-     *
-     * @param slot Az adatokat tartalmazó slot
-     */
     protected void setItem(Slot slot) {
         ItemType type = slot.getStoredItemType();
         if (type != null) {

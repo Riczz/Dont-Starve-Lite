@@ -6,9 +6,6 @@ import dslite.world.entity.item.ItemType;
 
 import java.util.Map;
 
-/**
- * A tábortűz Itemet leíró osztály
- */
 public final class Campfire extends Item implements Craftable {
 
     public Campfire() {

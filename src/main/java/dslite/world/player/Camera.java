@@ -1,11 +1,11 @@
-package dslite.gui;
+package dslite.world.player;
 
+import dslite.gui.GameScreen;
 import dslite.world.Updatable;
 import dslite.world.player.Player;
 
 /**
- * A játékban használt kamera, a játékos pozíciója alapján
- * határozza meg az eltolás értékét, és folyamatosan követi a játékost.
+ * Camera that follows the player.
  */
 public final class Camera implements Updatable {
 
@@ -19,10 +19,10 @@ public final class Camera implements Updatable {
     private static final int ROWS = GameScreen.ROW_COUNT;
 
     /**
-     * Konstruktor, ami beállítja a kamera szélességét és magasságát.
+     * Initializes the camera with specified width and height.
      *
-     * @param width  Szélesség
-     * @param height Magasság
+     * @param width  camera width
+     * @param height camera height
      */
     public Camera(int width, int height) {
         this.width = width;
@@ -30,11 +30,12 @@ public final class Camera implements Updatable {
     }
 
     /**
-     * Konstruktor, ami beállítja a kamera szélességét, magasságát, és a hozzá tartozó játékost.
+     * Initializes the camera with specified width and height and
+     * also sets the {@link Player}.
      *
-     * @param width  Szélesség
-     * @param height Magasság
-     * @param player A beállított játékos
+     * @param width  camera width
+     * @param height camera height
+     * @param player the player to follow
      */
     public Camera(int width, int height, Player player) {
         this(width, height);
@@ -42,10 +43,7 @@ public final class Camera implements Updatable {
     }
 
     /**
-     * A kamerát frissítő metódus.
-     * Leellenőrzi a játékostól való távolságot, ha kívül esne a
-     * pálya határain, akkor beállítja maximum/minimum értékre.
-     * A Gamescreen draw() metódusa hívja meg.
+     * Updates the camera view.
      *
      * @see GameScreen
      * @see Player
@@ -66,11 +64,6 @@ public final class Camera implements Updatable {
         }
     }
 
-    /**
-     * Beállítja a kamera által követett játékost.
-     *
-     * @param player A beállított játékos
-     */
     public void setPlayer(Player player) {
         this.player = player;
         update();

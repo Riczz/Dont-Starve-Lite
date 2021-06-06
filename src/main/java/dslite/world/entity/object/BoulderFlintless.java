@@ -6,9 +6,6 @@ import dslite.world.entity.item.tool.Tool;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A Sivatagi szikla GameObject-et leíró osztály.
- */
 public final class BoulderFlintless extends GameObject {
 
     protected BoulderFlintless() {

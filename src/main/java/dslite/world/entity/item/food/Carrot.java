@@ -2,9 +2,6 @@ package dslite.world.entity.item.food;
 
 import dslite.world.entity.item.ItemType;
 
-/**
- * A répa Itemet leíró osztály.
- */
 public final class Carrot extends Food {
 
     public Carrot() {

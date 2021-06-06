@@ -4,9 +4,6 @@ import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * Az eldobott kő GameObjectet leíró osztály.
- */
 public final class RocksObj extends GameObject {
 
     public RocksObj() {

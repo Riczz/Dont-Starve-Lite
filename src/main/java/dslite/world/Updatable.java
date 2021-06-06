@@ -1,7 +1,7 @@
 package dslite.world;
 
 /**
- * Interfész update metódussal.
+ * Interface for objects which state can be updated.
  */
 public interface Updatable {
 

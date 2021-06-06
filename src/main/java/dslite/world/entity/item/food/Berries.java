@@ -2,9 +2,6 @@ package dslite.world.entity.item.food;
 
 import dslite.world.entity.item.ItemType;
 
-/**
- * A bogyó Itemet leíró osztály.
- */
 public final class Berries extends Food {
 
     public Berries() {

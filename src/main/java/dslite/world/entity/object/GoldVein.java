@@ -7,9 +7,6 @@ import dslite.world.player.Player;
 import dslite.world.player.inventory.Inventory;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * Az arany érc GameObjectet leíró osztály.
- */
 public final class GoldVein extends GameObject {
     protected GoldVein() {
         super(ObjectType.GOLDVEIN);

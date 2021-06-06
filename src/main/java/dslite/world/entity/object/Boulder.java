@@ -6,9 +6,6 @@ import dslite.world.entity.item.tool.Tool;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A Szikla GameObject-et leíró osztály.
- */
 public final class Boulder extends GameObject {
 
     private byte health = 2;

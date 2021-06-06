@@ -1,30 +1,23 @@
 package dslite.world.biomes;
 
 /**
- * Egy pontot leíró objektum.
- * Lehett volna használni a beépített osztályt is, de az nem lenne gazdaságos.
+ * Represents a 2D point.
+ * Used for giving positions and in map generation.
  *
- * @see javafx.geometry.Point2D
+ * @see dslite.world.WorldMap
  */
 public final class Point {
     private final int x;
     private final int y;
 
-    /**
-     * Egy pont konstruktora
-     *
-     * @param x A pont x koordinátája
-     * @param y A pont y koordinátája
-     */
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Statikus függvény Manhattan-távolság kiszámítására.
+     * Calculates Manhattan distance between two points.
      *
-     * @return Két pont közötti Manhattan-távolság
      * @see dslite.world.WorldMap
      */
     public static int mDist(Point p, int x2, int y2) {
@@ -34,9 +27,8 @@ public final class Point {
     }
 
     /**
-     * Statikus függvény Euklideszi-távolság kiszámítására.
+     * Calculates euclidean distance between two points.
      *
-     * @return Két pont közötti Euklideszi-távolság
      * @see dslite.world.WorldMap
      */
     public static int cDist(Point p, int x2, int y2) {

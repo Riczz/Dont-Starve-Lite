@@ -4,11 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * A menüben megjelenő nyilat leíró osztály.
- * Hozzáköthető az ArrowButtonhoz
+ * GUI class of the arrow symbol of {@link ArrowMenu}.
  *
  * @see ArrowButton
- * @see ArrowMenu
  */
 public final class Arrow extends ImageView {
 
@@ -17,8 +15,9 @@ public final class Arrow extends ImageView {
     private static final Image IMG = new Image(Arrow.class.getResource(PATH).toExternalForm());
 
     /**
-     * A nyíl konstruktora
-     * @param isPrevious Visszafelé mutató-e
+     * Constructs an arrow.
+     * If <code>isPrevious</code> is set to <code>true</code><br/>
+     * the image gets rotated by 180 degrees.
      */
     public Arrow(boolean isPrevious) {
         super();
@@ -30,8 +29,7 @@ public final class Arrow extends ImageView {
     }
 
     /**
-     * Hozzáköti a nyilat a gombhoz.
-     * @param btn A gomb, amihez hozzákötődik
+     * Links the arrow to an {@link ArrowButton}.
      */
     public void linkToButton(ArrowButton btn) {
         this.setOnMouseClicked(mouseEvent ->

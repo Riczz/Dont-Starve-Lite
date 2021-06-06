@@ -1,11 +1,11 @@
 package dslite.world.biomes;
 
+import dslite.world.entity.object.GameObject;
 import dslite.world.tiles.TileType;
-
 import java.util.Map;
 
 /**
- * A Biome típusokat leíró enum.
+ * Enum containing the {@link Biome} types.
  */
 public enum BiomeType {
     FOREST(TileType.FOREST, Map.of(1, 0.5f, 11, 0.3f, 15, 0.05f, 14, 0.05f, 5, 0.02f, 4, 0.1f, 2, 0.1f, 3, 0.1f)),
@@ -22,11 +22,9 @@ public enum BiomeType {
     public static final int LEN = values().length;
 
     /**
-     * A Biome típus konstruktora.
-     *
-     * @param type       A biome alapértelmezett Tile típusa
-     * @param spawnrates Az előforduló Gameobjectekhez tartozó spawnolási esélyek
-     * @see dslite.world.entity.object.GameObject
+     * Constructs a new biome type.
+     * @param type the {@link TileType} the biome is made of.
+     * @param spawnrates spawnrates for specific {@link GameObject} id-s.
      * @see dslite.world.entity.object.ObjectInfo
      */
     BiomeType(TileType type, Map<Integer, Float> spawnrates) {

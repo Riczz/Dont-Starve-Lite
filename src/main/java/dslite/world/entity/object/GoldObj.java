@@ -4,9 +4,6 @@ import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * Az eldobott aranyrög GameObjectet leíró osztály.
- */
 public final class GoldObj extends GameObject {
     public GoldObj() {
         super(ObjectType.GOLD);

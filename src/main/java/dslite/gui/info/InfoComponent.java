@@ -6,7 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 
 /**
- * A játékos adatait megjelenítő nézet.
+ * GUI class for displaying information about the {@link Player}.
  *
  * @see StatBox
  * @see StatBoxSimple
@@ -39,7 +39,7 @@ public final class InfoComponent extends VBox {
     }
 
     /**
-     * Frissíti a kijelzett értékeket a játékos adatai alapján.
+     * Refreshes the displayed values based on the player's stats.
      */
     public void update() {
         setHealth(player.getHealth());

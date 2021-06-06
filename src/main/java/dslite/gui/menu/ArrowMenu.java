@@ -4,11 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 
 /**
- * Nyilakkal váltogatható menü, a főmenüben található.
- * Tartalmaz két nyilat, középen egy gombot, a nyilak segítségével
- * lehet váltani az ArrowButtonhoz hozzárendelt opciók közt.
+ * GUI Menu that can be cycled with {@linkplain Arrow}s.
  *
- * @see Arrow
  * @see ArrowButton
  * @see dslite.controllers.MenuController
  */
@@ -18,10 +15,6 @@ public final class ArrowMenu extends HBox {
     private final Arrow next = new Arrow(false);
     private final ArrowButton btn = new ArrowButton();
 
-    /**
-     * A nyilas menü konstruktora.
-     * Beállítja a méreteket, és hozzáadja az elemeket.
-     */
     public ArrowMenu() {
         super();
         setAlignment(Pos.CENTER);

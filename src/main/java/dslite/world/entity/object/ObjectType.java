@@ -3,8 +3,7 @@ package dslite.world.entity.object;
 import dslite.world.entity.Sprite;
 
 /**
- * Az GameObjectek típusaihoz tartozó enum.
- * Mindegyik objektumhoz hozzárendeli a Sprite-jait index alapján.
+ * Enum for the visible objects on the map.
  *
  * @see Sprite
  * @see dslite.world.entity.Textures
@@ -43,10 +42,11 @@ public enum ObjectType {
     private final Sprite sprite;
 
     /**
-     * Az objektumtípus konstruktora.
-     * Egy típushoz tartozhat többféle Sprite is.
+     * Constructs a game object.
+     * Every type has its own sprite index and
+     * one type can have multiple {@linkplain Sprite}s.
      *
-     * @param spriteIndex Az objektumhoz tartozó Sprite index(ek)
+     * @param spriteIndex sprite id of the object
      * @see Flower
      */
     ObjectType(int... spriteIndex) {

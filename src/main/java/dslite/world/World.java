@@ -4,9 +4,6 @@ import dslite.controllers.GameController;
 import dslite.controllers.MenuController;
 import dslite.world.player.Player;
 
-/**
- * A világot, és a hozzá tartozó adatokat összefogó osztály.
- */
 public final class World implements Updatable {
 
     private final Player player;
@@ -16,14 +13,11 @@ public final class World implements Updatable {
     private int dayCount = 0;
     private GameState gameState;
 
-    public static final byte AP_DAY = 85;                                               //Cselekvéspontok nappal
-    public static final byte AP_NIGHT = 30;                                             //Cselekvéspontok éjszaka
-    public static final byte DAY_LENGTH = AP_DAY + AP_NIGHT;                            //Nap hossza
+    //Initial values
+    public static final byte AP_DAY = 85;                                               //AP during daytime
+    public static final byte AP_NIGHT = 30;                                             //AP during nighttime
+    public static final byte DAY_LENGTH = AP_DAY + AP_NIGHT;                            //Length of day
 
-    /**
-     * A világ konstruktora.
-     * @param controller A vezérlést elvégző kontroller osztály
-     */
     public World(GameController controller) {
         this.controller = controller;
         gameState = GameState.DAY;
@@ -31,10 +25,6 @@ public final class World implements Updatable {
         player = new Player(this);
     }
 
-    /**
-     * Világ frissítése.
-     * Ha a játékosnak elfogytak a cselekvéspontjai, átávltja a napszakot.
-     */
     @Override
     public void update() {
         if (player.getActionPoints() <= 0) {
@@ -42,9 +32,6 @@ public final class World implements Updatable {
         }
     }
 
-    /**
-     * Napszak átváltása
-     */
     private void changeGameState() {
         if (gameState == GameState.DAY) {
             player.setActionPoints(AP_NIGHT);

@@ -11,15 +11,15 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * A fő osztály.
- * Ez jeleníti meg a főmenüt.
+ * JavaFX version of Don't starve game.
  *
- * @see dslite.controllers.MenuController
+ * @author Riczz
+ * @version 1.0
  */
 public final class Main extends Application {
 
     /**
-     * A játékban a generáláshoz használt random szám generátor.
+     * Random number generator used in map generation.
      *
      * @see dslite.world.WorldMap
      * @see Random

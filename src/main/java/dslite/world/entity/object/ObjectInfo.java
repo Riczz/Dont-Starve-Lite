@@ -2,18 +2,14 @@ package dslite.world.entity.object;
 
 import dslite.world.entity.object.dropped.*;
 
-/**
- * Nem példányosítható osztály egyetlen statikus metódussal,
- * amivel lekérhető egy GameObject id-hez tartozó objektum.
- */
 public final class ObjectInfo {
 
     private ObjectInfo() {}
 
     /**
-     * A játék objektumaihoz rendel hozzá indexeket.
-     * @param index Az objektumhoz tartozó index
-     * @return Az indexhez tartozó új objektum
+     * Returns a {@code GameObject} for the given id.
+     * @param index id for the game object
+     * @return object reference
      * @see ObjectType
      */
     public static GameObject getObject(int index) {

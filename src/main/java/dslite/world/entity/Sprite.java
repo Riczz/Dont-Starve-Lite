@@ -1,10 +1,5 @@
 package dslite.world.entity;
 
-/**
- * A játékban lévő Sprite-okat leíró osztály.
- *
- * @see Textures
- */
 public final class Sprite {
 
     private final int index;

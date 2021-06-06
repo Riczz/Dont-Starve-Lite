@@ -5,11 +5,9 @@ import javafx.scene.paint.Color;
 import java.util.Locale;
 
 /**
- * Ugyan az mint a StatBox, csak nem tartozik hozzá maximum érték,
- * és nem színeződik a szöveg.
- *
- * @see StatBox
- */
+ * {@link StatBox} for displaying a value.<br/>
+ * The color of the text is always white.
+ * */
 public final class StatBoxSimple extends StatBox {
     protected StatBoxSimple(String text) {
         super(text);

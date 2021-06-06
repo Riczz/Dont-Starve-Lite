@@ -6,9 +6,6 @@ import dslite.world.entity.item.tool.Tool;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A szúrós fa GameObjectet leíró osztály.
- */
 public final class SpikyTree extends GameObject {
 
     private byte health = 2;

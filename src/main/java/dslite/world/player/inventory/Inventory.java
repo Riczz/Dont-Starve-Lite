@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A játékos eszköztára
+ * The inventory of the {@link Player}.
  */
 public final class Inventory implements Updatable {
 
@@ -29,8 +29,7 @@ public final class Inventory implements Updatable {
     }
 
     /**
-     * Ha van frissíthető item az inventoryban,
-     * frissíti őket.
+     * Calls the {@code update()} method for all {@link Updatable} item inside the inventory.
      */
     @Override
     public void update() {
@@ -43,13 +42,14 @@ public final class Inventory implements Updatable {
     }
 
     /**
-     * Megpróbálja lecraftolni az adott eszközt feltéve,
-     * hogy rendelkezésre áll-e a szükséges mennyiségű alapanyag,
-     * és a craftolás után lesz-e szabad hely az eszköz eltárolásához.
+     * <p>Tries to craft the given item if all of the required items are present and
+     * there will be enough space for storing the item after it has been crafted.</p>
+     * <p>If the parameter {@code craft} is set to {@code false}, the item won't be crafted,
+     * the function will only check if the crafting would be possible or not.</p>
      *
-     * @param item A craftolni kívánt eszköz.
-     * @param craft Ténylegesen lecraftolja-e az itemet.
-     * @return igaz ha sikerült a craftolás, hamis ha nem.
+     * @param item the {@link Item} to be crafted
+     * @param craft actually craft the item
+     * @return {@code true} if the crafting was successful, {@code false} if not
      */
     public boolean tryToCraft(Item item, boolean craft) {
         if (!(item instanceof Craftable)) return false;
@@ -80,8 +80,11 @@ public final class Inventory implements Updatable {
 
     }
 
-    // Összeszámolja, hogy az adott típusú elemekből hány
-    // darab van az inventoryban.
+    /**
+     * Gets the quantity of a specific item inside the inventory.
+     * @param type the searched {@link ItemType}
+     * @return quantity of the item
+     */
     public int getItemCountFor(ItemType type) {
         int count = 0;
         for (Slot s : slots) {
@@ -93,11 +96,11 @@ public final class Inventory implements Updatable {
     }
 
     /**
-     * Az adott típust eltároló slotokból elvesz adott mennyiségű elemet.
+     * Removes a given quantity of a specific {@link ItemType}.
      *
-     * @param itemType Az eszköz típusa
-     * @param quantity Elvenni kívánt mennyiség
-     * @return A levont elemek száma
+     * @param itemType type of the item to remove
+     * @param quantity the amount to remove
+     * @return number of items removed successfully
      */
     public int removeItemByType(ItemType itemType, int quantity) {
         int itemsLeft = quantity;
@@ -116,9 +119,9 @@ public final class Inventory implements Updatable {
     }
 
     /**
-     * Inventory slot törlés konkrét Item referencia alapján.
+     * Removes a slot that contains a specific {@link Item}.
      *
-     * @param item a törlendő item
+     * @param item the searched item.
      */
     public void removeItem(Item item) {
         Optional<Slot> optionalSlot =
@@ -131,39 +134,40 @@ public final class Inventory implements Updatable {
     }
 
     /**
-     * Megpróbál adott típusú elemből bizonyos mennyiségűt
-     * hozzáadni az Inventory tartalmához.
-     * @param itemType A hozzáadandó elem típusa
-     * @param quantity A hozzáadandó mennyiség
-     * @return Sikeres volt-e a művelet
+     * Tries to add a given number of items to the inventory.
+     * <p>If there is not enough space for the item the items wont be added
+     * and the function returns {@code false}.</p>
+     *
+     * @param itemType {@link ItemType} of the item to add
+     * @param quantity the number of items to be added
+     * @return {@code true} if the operation was successful, {@code false} if not
      */
     public boolean addItem(ItemType itemType, int quantity) {
 
         int addedItems = 0;
-        while (addedItems < quantity) {                     //Amíg nem sikerült minden elemet hozzáadni
-            Slot s = availableSlotFor(itemType);            //Megnézzük, van-e még szabad hely
-            if (s == null) {                                //Ha nincs már üres slot, de még lenne mit hozzáadni
-                removeItemByType(itemType, addedItems);     //Kitöröljük az eddig hozzáadott elemeket.
+        while (addedItems < quantity) {
+            Slot s = availableSlotFor(itemType);
+            if (s == null) {
+                removeItemByType(itemType, addedItems);
                 invDisplay.update();
-                return false;                               //És visszatérünk hamissal.
+                return false;
             }
 
-            if (s.getStoredItemType() == null) {            //Ha van üres slot,
-                s.setStoredItem(itemType);                  //Az értékét beállítjuk a jelenlegi típusra
+            if (s.getStoredItemType() == null) {
+                s.setStoredItem(itemType);
             }
-            addedItems += s.add(quantity-addedItems);       //És hozzáadjuk a hátralévő mennyiséget
+            addedItems += s.add(quantity-addedItems);
         }
         invDisplay.update();
         return true;
     }
 
     /**
-     * Megvizsgálja, hogy van-e az adott eszköz típushoz szabad slot.
-     * Először olyan slotokat keres, amihez már ez az elemtípus tartozik, és még nem üres.
-     * Ha nincs ilyen, akkor olyat keres, ami teljesen üres.
+     * <p>Checks if there is free space for the given {@link ItemType}.
+     * The function first searches for slots with the given type that are not full.<br/>
+     * If no appropriate slots are found, then it searches for fully empty ones.</p>
      *
-     * @param type az eszköz típusa
-     * @return sikerült-e találni
+     * @return reference to a possible {@link Slot}, or {@code null} if none has been found.
      */
     private Slot availableSlotFor(ItemType type) {
         Optional<Slot> s = Arrays.stream(slots)
@@ -183,9 +187,6 @@ public final class Inventory implements Updatable {
         return s.orElse(null);
     }
 
-    /**
-     * Metódus ami feltölti a slots tömböt üres Slot objektumokkal.
-     */
     private void initSlots() {
         slots = new Slot[INV_SIZE];
         for (int i = 0; i < INV_SIZE; i++) {
@@ -196,10 +197,6 @@ public final class Inventory implements Updatable {
         }
     }
 
-    /**
-     * Adott slot törlése referencia alapján.
-     * @param slot A törlendő slot
-     */
     public void removeSlot(Slot slot) {
         for (Slot s : slots) {
             if (s == slot) {
@@ -211,18 +208,10 @@ public final class Inventory implements Updatable {
         invDisplay.update();
     }
 
-    /**
-     * Visszaadja a jelenleg kiválasztott Slot objektumot
-     * @return A visszaadott slot
-     */
     public Slot getSelectedSlot() {
         return selectedSlot;
     }
 
-    /**
-     * Beállítja kiválasztottra az adott indexű Slotot.
-     * @param index A slot indexe
-     */
     public void setSelectedSlot(int index) {
         if (index < 0) return;
         this.selectedSlot = slots[Math.min(INV_SIZE - 1, index)];
@@ -237,10 +226,6 @@ public final class Inventory implements Updatable {
         return slots;
     }
 
-    /**
-     * Tostring metódus teszteléshez
-     * @return Az inventory slotjainak tartalma
-     */
     @Override
     public String toString() {
         String ret = "";

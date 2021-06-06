@@ -15,42 +15,29 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A Tábortűz GameObject-et leíró osztály.
- */
 public final class CampfireObj extends GameObject implements Drawable, Updatable {
 
-    private final Point pos;                                                //A tábortűz pozíciója
-    private final int placedAtDayNum;                                       //Hanyadik napon lett lerakva
-    private static final int LIGHT_DIST = 5;                                //Milyen távolságban világítja meg a teret
+    private final Point pos;
+    private final int placedAtDayNum;
+    private static final int LIGHT_DIST = 5;
 
-    //Referenciák
     private final World world = GameController.getWorld();
     private final Player player = world.getPlayer();
 
-    //Megvilágított mezők
     private final List<Point> litTiles;
 
-    /**
-     * A tábortűz konstruktora.
-     * Beállítja a pozícióját, lekérdezi a jelenlegi nap számát.
-     * Kiszámítja, hogy melyik mezőket világítja meg, ezeket eltárolja egy listában.
-     */
     public CampfireObj() {
         super(ObjectType.CAMPFIRE);
         pos = player.getPos();
         placedAtDayNum = world.getDayCount();
 
-        //Hozzáadás a frissíthető GameObjectek listához
         WorldMap map = world.getMap();
         map.addToUpdatable(this);
 
-        //Játékos cselekvéspont levonása
         Player player = GameController.getPlayer();
         player.addActionPoints((byte) -2);
 
 
-        //A megvilágított mezők kiszámítása
         litTiles = new ArrayList<>();
         for (int i = pos.getX() - LIGHT_DIST; i <= pos.getX() + LIGHT_DIST; i++) {
             for (int j = pos.getY() - LIGHT_DIST; j <= pos.getY() + LIGHT_DIST; j++) {
@@ -64,12 +51,13 @@ public final class CampfireObj extends GameObject implements Drawable, Updatable
     }
 
     /**
-     * Folyamatosan ellenőrzi, hogy eltelt-e már a nap, ha igen, törli magát.
-     * Este a játékostól való távolságot is figyeli.
+     * If the current day has passed, the campfire gets deleted.
+     * It also checks the distance from the player during nighttime.
      */
     @Override
     public void update() {
         if (world.getDayCount() > placedAtDayNum) {
+            //TODO: find a fix for ConcurrentModificationException
             Platform.runLater(() -> {
                 GameController.getMap().setTileAtPos(pos, getTile().getType());
                 GameController.getMap().removeFromUpdatable(this);
@@ -78,12 +66,10 @@ public final class CampfireObj extends GameObject implements Drawable, Updatable
 
         if (world.getGameState() == GameState.NIGHT) {
 
-            //Kirajzolja magát
+            //Draws itself
             draw(GameController.getGrid().getGraphicsContext2D(), pos.getX(), pos.getY());
 
-            //Ha a játékosnak este nincs beállítva, hogy van a közelében tábortűz,
-            //Mindegyik egyesével ellenőrzi a távolságát a játékostól, ha bármelyik érzékeli, hogy
-            //A játékos a közelében tartózkodik, átállítja a tulajdonságot, így a többinek nem kell tovább ellenőrizni.
+            //Every campfire checks if the player is inside their range
             if (!player.hasCampFireNearby()) {
                 if (Point.mDist(pos, player.getPosX(), player.getPosY()) <= LIGHT_DIST) {
                     player.setHasCampFireNearby(true);
@@ -93,7 +79,7 @@ public final class CampfireObj extends GameObject implements Drawable, Updatable
     }
 
     /**
-     * Kirajzolja az összes megvilágított mezőt.
+     * Draws the lit tiles.
      */
     @Override
     public void draw(GraphicsContext gc, int i, int j) {

@@ -2,9 +2,6 @@ package dslite.world.entity.object;
 
 import dslite.world.player.Player;
 
-/**
- * A leszedett szúrós bokor GameObjectet leíró osztály.
- */
 public final class SpikyBushPicked extends GameObject {
 
     protected SpikyBushPicked() {

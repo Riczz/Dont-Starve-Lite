@@ -5,6 +5,8 @@ import dslite.world.Updatable;
 import dslite.world.World;
 import dslite.world.WorldMap;
 import dslite.world.biomes.Point;
+import dslite.world.entity.object.CampfireObj;
+import dslite.world.player.Camera;
 import dslite.world.player.Player;
 import dslite.world.tiles.Tile;
 import dslite.world.tiles.TileType;
@@ -14,8 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
 /**
- * A játékot megjelenítő képernyő.
- * Singleton osztály.
+ * GUI class for the main game screen.
  */
 public final class GameScreen extends Canvas implements Updatable {
 
@@ -38,7 +39,7 @@ public final class GameScreen extends Canvas implements Updatable {
     private static GameScreen instance = null;
 
     /**
-     * A játékban használt grid, ez jeleníti meg a Tile-okat.
+     * The main screen that displays the world inside a grid.
      *
      * @see dslite.controllers.GameController
      */
@@ -47,8 +48,6 @@ public final class GameScreen extends Canvas implements Updatable {
         prefWidth(PREF_WIDTH);
         prefHeight(PREF_HEIGHT);
 
-        //Ez egy transzformáció, ami az 1x1-es négyzeteket felskálázza a képernyő méreteihez
-        //És végül így lesz kirajzolva a képernyő.
         Affine affine = new Affine();
         affine.appendScale(Math.round(getWidth() / COL_COUNT), Math.round(getHeight() / ROW_COUNT));
         gc.setTransform(affine);
@@ -60,7 +59,7 @@ public final class GameScreen extends Canvas implements Updatable {
     }
 
     /**
-     * Frissíti a kamerát, majd kirajzolja a képernyőt.
+     * Updates the camera view and redraws the world.
      */
     @Override
     public void update() {
@@ -69,19 +68,19 @@ public final class GameScreen extends Canvas implements Updatable {
     }
 
     /**
-     * Képernyő kirajzolásáért felelős metódus.
+     * Draws the world.
      */
     public void draw() {
 
-        //Képernyő kitöltése vízzel
+        //Fill the screen with water
         gc.setFill(TileType.WATER.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
 
-        //Kamera pozíció lekérdezése
+        //Get camera positions
         int xOffset = cam.getxOffset();
         int yOffset = cam.getyOffset();
 
-        //Képernyő kirajzolása cellánként
+        //Draw the world tile by tile
         for (int i = 0; i < ROW_COUNT; i++) {
             for (int j = 0; j < COL_COUNT; j++) {
                 int posX = xOffset + i;
@@ -92,24 +91,18 @@ public final class GameScreen extends Canvas implements Updatable {
             }
         }
 
-        //Rács kirajzolása, ha be van állítva
+        //Draw the grid if option set
         if (DRAW_GRID) drawGrid();
 
-        //Éjszaka kép besötétíése
+        //Make the world dark if it's nighttime
         if (world.getGameState() == GameState.NIGHT) drawNightOverlay();
     }
 
-    /**
-     * A játékos kirajzolása.
-     */
     public void drawPlayer(Player player) {
         gc.drawImage(Player.IMG, player.getPosX() - cam.getxOffset(),
                 player.getPosY() - cam.getyOffset(), 1.0, 1.0);
     }
 
-    /**
-     * Rács kirajzolása
-     */
     private void drawGrid() {
         for (int i = 0; i < COL_COUNT; i++) {
             gc.strokeLine(i, 0.0, i, ROW_COUNT);
@@ -120,9 +113,6 @@ public final class GameScreen extends Canvas implements Updatable {
         }
     }
 
-    /**
-     * Éjszakai képernyő
-     */
     private void drawNightOverlay() {
         gc.setFill(Color.BLACK);
         gc.setGlobalAlpha(0.5);
@@ -131,12 +121,10 @@ public final class GameScreen extends Canvas implements Updatable {
     }
 
     /**
-     * Adott pozíción lévő Tile kirajzolása, ha benne van a kamera látóterében.
-     * Ha be van állítva a rács, akkor azt is rajzol köré.
-     * A Tábortűz használja.
+     * Draw the tile in the specified position if it's inside the camera's view.<br/>
+     * This method is being used by {@link CampfireObj}.
      *
-     * @param pos A mező pozíciója (tilemap koordináták)
-     * @see dslite.world.entity.object.CampfireObj
+     * @param pos position of the tile
      */
     public void drawTileAtPos(Point pos) {
         int posX = pos.getX() - cam.getxOffset();
@@ -151,11 +139,6 @@ public final class GameScreen extends Canvas implements Updatable {
         }
     }
 
-    /**
-     * Világ hozzáadása.
-     *
-     * @param world A hozzáadott világ objektum
-     */
     public void setWorld(World world) {
         this.world = world;
         this.map = world.getMap();

@@ -4,7 +4,7 @@ import dslite.world.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * A játékban lévő üres mezőt leíró osztály.
+ * Class describing a game field without any stored objects.
  *
  * @see TileWithObject
  */

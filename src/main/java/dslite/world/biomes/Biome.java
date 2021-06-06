@@ -6,8 +6,8 @@ import dslite.world.tiles.TileType;
 import java.util.HashMap;
 
 /**
- * A mapot felépítő régiókat leíró osztály, ezeknek az adatait tárolja.
- * Csak a map generálásakor van szerepe, utána törlődnek a létrehozott objektumok.
+ * Contains information about the biomes in the world.
+ * Only used during map generation, the objects get deleted afterwards.
  *
  * @see dslite.world.WorldMap
  * @see BiomeType
@@ -19,16 +19,9 @@ public final class Biome {
     private TileType tileType;
     private final BiomeType biomeType;
 
-    private final Point base;                                        //Generálópont,a Biome "középpontja"
-    private final HashMap<Point, Tile> tiles;                        //A Biome-hoz tartozó Tile-ok és azok pozíciói
+    private final Point base;                                        //The center position of the biome
+    private final HashMap<Point, Tile> tiles;                        //The contained tiles and their positions
 
-    /**
-     * A Biome konstruktora
-     *
-     * @param type A Biome típusa
-     * @param x    A középpont x koordinátája
-     * @param y    A középpont y koordinátája
-     */
     public Biome(BiomeType type, int x, int y) {
         this.biomeType = type;
         this.tileType = type.getTileType();
@@ -37,25 +30,26 @@ public final class Biome {
     }
 
     /**
-     * Egy tile hozzáadása a biomehoz,
-     * Map generálás közben használatos.
+     * Adds a {@link Tile} to the biome.
      *
-     * @param t A Tile
-     * @param x Vízszintes pozíció
-     * @param y Függőleges pozíció
+     * @param t the reference to be added
+     * @param x x position
+     * @param y y position
+     * @see Tile
      */
     public void addToList(Tile t, int x, int y) {
         tiles.put(new Point(x, y), t);
     }
 
     /**
-     * Kicseréli a biomehoz tartozó Tile-okat más típusúra.
+     * Changes the {@link TileType} of all of the contained tiles to a specific type.
      *
-     * @param tileType A típus, amire le lesz cserélve a régi
+     * @param biome the biome to change
+     * @param tileType the type of the biome
      */
-    public void setTileType(TileType tileType) {
-        tiles.forEach((point, tile) -> tile.setType(tileType));
-        this.tileType = tileType;
+    public static void setTileType(Biome biome, TileType tileType) {
+        biome.tiles.forEach((point, tile) -> tile.setType(tileType));
+        biome.tileType = tileType;
     }
 
     public HashMap<Point, Tile> getTiles() {

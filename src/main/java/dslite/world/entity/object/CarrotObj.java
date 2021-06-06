@@ -4,9 +4,6 @@ import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A Répa GameObject-et leíró osztály.
- */
 public final class CarrotObj extends GameObject {
     public CarrotObj() {
         super(ObjectType.CARROT);

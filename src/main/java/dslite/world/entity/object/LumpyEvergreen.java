@@ -6,9 +6,6 @@ import dslite.world.entity.item.tool.Tool;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A nagy fenyő GameObjectet leíró osztály.
- */
 public final class LumpyEvergreen extends GameObject {
 
     private byte health = 2;

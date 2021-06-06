@@ -4,6 +4,11 @@ import dslite.controllers.GameController;
 import dslite.world.entity.item.Item;
 import dslite.world.entity.item.ItemType;
 
+/**
+ * Abstract class for Tools.<br/>
+ * <p>Every tool has it's own durability.
+ * If this value gets below {@code 0}, the Item will be removed.</p>
+ */
 public abstract class Tool extends Item {
 
     protected byte durability;

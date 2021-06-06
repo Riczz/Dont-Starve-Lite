@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 /**
- * A játék indításakor megjelenő menü kontroller osztálya.
+ * Controller for the main menu.
  */
 public final class MenuController {
 
@@ -48,12 +48,12 @@ public final class MenuController {
     @FXML
     private Button generateBtn;
 
-    private static String biomeSize;                                //A menüben kiválasztott biome méret
-    private static int sizeX;                                       //A menüben kiválasztott világ méret szélessége
-    private static int sizeY;                                       //A menüben kiválasztott világ méret magassága
+    private static String biomeSize;                                //The selected biome size
+    private static int sizeX;                                       //World width
+    private static int sizeY;                                       //World height
 
-    private double xOffset;                                         //Az kurzor X pozíciója
-    private double yOffset;                                         //Az kurzor Y pozíciója
+    private double xOffset;                                         //Mouse X pos
+    private double yOffset;                                         //Mouse Y pos
     private Stage stage;
 
     @FXML
@@ -67,15 +67,14 @@ public final class MenuController {
     );
 
     /**
-     * Lellenőrzi a mezőbe beírt seedet.
-     * Ha tartalmaz szöveges karaktert, vagy legalább 20 karakternyi számot, hashet generál belőle.
-     * Ha üres a mező, akkor marad véletlenszerű szám a seed.
-     *
-     * @param seed A beírt érték
+     * Validates the seed field.
+     * If it contains at least one alphabetic character or at least 20 digits,
+     * a hash value will be generated from it.<br/>
+     * Otherwise the original value will be used.
      */
     @FXML
     private void seedCheck(String seed) {
-        if (Pattern.matches("[0-9]+", seed) && seed.length() < 20) {
+        if (Pattern.matches("[0-9]{1,19}", seed)) {
             Main.RAND.setSeed(Long.parseLong(seed));
         } else if (!seed.equals("")) {
             Main.RAND.setSeed(seed.hashCode());
@@ -83,9 +82,7 @@ public final class MenuController {
     }
 
     /**
-     * Megjeleníti a játék képernyőjét a megadott beállításokkal.
-     *
-     * @see GameController
+     * Starts the game with the selected settings.
      */
     @FXML
     private void startGame(ActionEvent event) throws IOException {
@@ -130,9 +127,6 @@ public final class MenuController {
         generateBtn.setTooltip(new Tooltip("Generate map"));
     }
 
-    /**
-     * Az egér gomb lenyomását lekezelő függvény.
-     */
     @FXML
     private void handlePressEvent(MouseEvent event) {
         stage = getStage(mainPane);
@@ -140,12 +134,6 @@ public final class MenuController {
         yOffset = stage.getY() - event.getScreenY();
     }
 
-    /**
-     * Az ablak mozgatását lekezelő függvény.
-     * (Undecorated StageStyle miatt van rá szükség)
-     *
-     * @see StageStyle
-     */
     @FXML
     private void handleDragEvent(MouseEvent event) {
         stage = getStage(mainPane);
@@ -155,9 +143,6 @@ public final class MenuController {
         }
     }
 
-    /**
-     * Ablak minimalizálása.
-     */
     @FXML
     private void minimize() {
         stage = getStage(minBtn);

@@ -5,9 +5,6 @@ import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * A Virág GameObject-et leíró osztály.
- */
 public final class Flower extends GameObject {
 
     protected Flower() {

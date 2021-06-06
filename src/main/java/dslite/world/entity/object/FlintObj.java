@@ -4,9 +4,6 @@ import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 import dslite.world.tiles.TileWithObject;
 
-/**
- * Az eldobott kavics GameObject-et leíró osztály.
- */
 public final class FlintObj extends GameObject {
     public FlintObj() {
         super(ObjectType.FLINT);

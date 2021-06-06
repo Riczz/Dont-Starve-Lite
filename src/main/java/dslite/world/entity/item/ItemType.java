@@ -2,10 +2,11 @@ package dslite.world.entity.item;
 
 import dslite.world.entity.Sprite;
 import dslite.world.entity.Textures;
+import dslite.world.entity.object.GameObject;
 import javafx.scene.image.Image;
 
 /**
- * Az Item típusokat leíró osztály
+ * This enum describes the possible {@linkplain Item}s in the player's inventory.
  */
 public enum ItemType {
 
@@ -39,12 +40,13 @@ public enum ItemType {
     private final boolean isStackable;
 
     /**
-     * Az Item típus konstruktora
+     * Constructor for an item.
      *
-     * @param spriteIndex Az Itemhez tartozó Sprite index
-     * @param name        Az Item neve
-     * @param objIndex    Az Itemhez tartozó GameObject indexe. Ha nincs, értéke -1
-     * @param isStackable Stackelhető-e az Inventoryban
+     * @param spriteIndex index for the item's {@link Sprite}.
+     * @param name        name of the item
+     * @param objIndex    {@link GameObject} id for the dropped equivalent
+     * @param isStackable can the item be stacked in the inventory
+     * @see dslite.world.entity.object.ObjectInfo
      */
     ItemType(byte spriteIndex, String name, byte objIndex, boolean isStackable) {
         sprite = new Sprite(spriteIndex);

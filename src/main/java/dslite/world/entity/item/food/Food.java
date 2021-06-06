@@ -7,8 +7,7 @@ import dslite.world.player.Player;
 import dslite.world.player.inventory.Inventory;
 
 /**
- * Az étel Itemeket leíró osztály.
- * Kiterjeszti az Itemet.
+ * Abstract class describing the edible {@linkplain Item}s.
  */
 public abstract class Food extends Item {
 
@@ -18,12 +17,12 @@ public abstract class Food extends Item {
     protected Item cookedForm;
 
     /**
-     * Egy étel típusú Item konstruktora.
-     * @param type A hozzá tartozó Item típus
-     * @param cookedForm A főtt megfelelőhöz tartozó objektum
-     * @param foodValue A táplálék érték
-     * @param healthValue Az élet érték
-     * @param sanityValue Az agy érték
+     * Constructs an edible Item.
+     * @param type {@link ItemType} of the food
+     * @param cookedForm {@link Food} object for the cooked version
+     * @param foodValue hunger value
+     * @param healthValue health value
+     * @param sanityValue sanity value
      */
     public Food(ItemType type, Food cookedForm, float foodValue, float healthValue, float sanityValue) {
         super(type);
@@ -33,11 +32,6 @@ public abstract class Food extends Item {
         this.sanityValue = sanityValue;
     }
 
-    /**
-     * Evés metódus.
-     * Hozzáadja a játékoshoz az
-     * eltárolt éhség- élet- és agy értékeket.
-     */
     public void eat() {
         Player player = GameController.getPlayer();
         player.addHunger(foodValue);
@@ -45,11 +39,6 @@ public abstract class Food extends Item {
         player.addSanity(sanityValue);
     }
 
-    /**
-     * Főzés metódus
-     * Ha az étel megfőzhető, akkor elveszi a játékos Inventoryjából
-     * ezt az Itemet, és hozzáadja a főtt megfelelőjét.
-     */
     public void cook() {
         Inventory inv = GameController.getPlayer().getInventory();
         if (cookedForm == null) return;

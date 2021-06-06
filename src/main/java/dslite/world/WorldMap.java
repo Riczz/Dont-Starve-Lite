@@ -15,8 +15,7 @@ import dslite.world.tiles.TileWithObject;
 import java.util.*;
 
 /**
- * A Világhoz tartozó map.
- * Itt készül el a játszható pálya a beállított értékek alapján.
+ * The map generator class.
  *
  * @see World
  * @see dslite.world.player.Player
@@ -42,9 +41,8 @@ public final class WorldMap {
     }
 
     /**
-     * Frissítés metódus.
-     * Az Updatable interface-el rendelkező GameObjectek miután létrehozzuk őket hozzáadják magukat a listához.
-     * Ez a metódus végigjárja őket, és meghívja a GameObjectek update metódusait.
+     * The updatable {@linkplain GameObject}s will be gathered here.
+     * The method calls the {@code update()} method for every object.
      */
     public void update() {
         for (GameObject obj : updatableObjects) {
@@ -56,13 +54,14 @@ public final class WorldMap {
     }
 
     /**
-     * A map generálását megvalósító metódus.
+     * Method for map generation
+     * The procedure is based on voronoi diagrams in some sort.
      */
+    //TODO: optimize memory usage and speed
     public void generateMap() {
         List<Biome> biomes = new ArrayList<>();
         Set<Point> biomePoints = new HashSet<>(Collections.emptySet());
 
-        // A kiválasztott biome méretnek megfelelő számú generálópont választása
         int biomeNum = 0;
         switch(MenuController.getBiomeSize()) {
             case "Small": {
@@ -79,21 +78,16 @@ public final class WorldMap {
             }
         }
 
-        // Kis szórás hozzáadása
         biomeNum += Main.RAND.nextInt(100);
 
-        // Generálópontok létrehozása
         while (biomePoints.size() < biomeNum) {
             biomePoints.add(new Point(Main.RAND.nextInt(width - 1), Main.RAND.nextInt(height - 1)));
         }
 
-        // Minden ponthoz beállít egy véletlen típusú Biome-ot adott középponttal.
         for (Point p : biomePoints) {
             biomes.add(new Biome(BiomeType.VAL[Main.RAND.nextInt(BiomeType.LEN)], p.getX(), p.getY()));
         }
 
-        // A map minden Tile-jára végignézi, hogy melyik pont esik hozzá a legközelebb, és annak megfelelően állítja be a
-        // típusát. Egyszerű buborékrendezés, egyáltalán nem hatékony, de működik.
         for (int i = 0; i < width - 1; i++) {
             for (int j = 0; j < height - 1; j++) {
                 Biome nearestBiome = null;
@@ -111,24 +105,22 @@ public final class WorldMap {
             }
         }
 
-        // Hogy ne legyen hosszabb, mint 100 sor :p
+        //TODO: organize this somehow
         initTilemap(TileType.WATER);
         chunkBorders(biomes);
         fillWithResources(biomes);
         makeTilemap(biomes);
         createSpawnPoint(biomes);
 
-        // Memória takarítás
+        //Memory cleaning
         biomePoints = null;
         biomes = null;
         System.gc();
     }
 
     /**
-     * A kapott listában található Biome-ok közül törli azokat, amik túlnyúlnak a
-     * Map határán (vízre cseréli ki az elemeit).
-     *
-     * @param biomes A lista, amin a művelet végrehajtódik.
+     * Replaces the tiles of biomes which areas touch the border of the map to water.
+     * This makes sure the edge of the map is always surrounded with water.
      */
     private void chunkBorders(List<Biome> biomes) {
         biomes.stream().filter(biome -> biome
@@ -138,21 +130,19 @@ public final class WorldMap {
                     int x = point.getX();
                     int y = point.getY();
                     return x == width - 2 || x == 0 || y == height - 2 || y == 0;  // Ha a biome bármelyik eleme túlnyúlik a határon,
-                })).forEach(border -> border.setTileType(TileType.WATER));         // Kicseréli az összes elemét vízre,
+                })).forEach(border -> Biome.setTileType(border, TileType.WATER));         // Kicseréli az összes elemét vízre,
         biomes.removeIf(biome -> biome.getTileType().equals(TileType.WATER));      // Végül töröljük őket.
     }
 
     /**
-     * Feltölti a mapot nyersanyagokkal a típusban meghatározott spawnolási értékeknek megfelelően.
-     *
-     * @param biomes A lista, amin a művelet végrehajtódik.
-     * @see BiomeType
+     * Fills the map with resources based on the {@linkplain BiomeType}s spawn rates.
      */
     private void fillWithResources(List<Biome> biomes) {
         for (Biome b : biomes) {
             Map<Integer, Float> spawnrates = b.getBiomeType().getSpawnrates();
 
             b.getTiles().replaceAll((point, tile) -> {
+                //Half of the tiles will always be empty
                 if (Main.RAND.nextFloat() > 0.5f) {
                     return tile;
                 }
@@ -174,11 +164,9 @@ public final class WorldMap {
     }
 
     /**
-     * Spawn point választása a játékos számára.
-     * Megkeresi a legelső olyan pozíciót, ami nem szolid, és azt választja ki.
-     * (A Biomek mezőin nincs szolid elem, de eredetileg lett volna ilyen is, ezért maradt benne).
-     *
-     * @param biomes A lista, amin a művelet végrehajtódik.
+     * Creates a spawn point for the player.<br/>
+     * Selects the first position which is not solid.
+     * @see TileType#WATER
      */
     private void createSpawnPoint(List<Biome> biomes) {
         for (Biome b : biomes) {
@@ -194,11 +182,6 @@ public final class WorldMap {
         }
     }
 
-    /**
-     * A map feltöltése Tile-okkal.
-     *
-     * @param biomes A lista, amin a művelet végrehajtódik.
-     */
     private void makeTilemap(List<Biome> biomes) {
         for (Biome b : biomes) {
             b.getTiles().forEach((point, tile) ->
@@ -206,11 +189,6 @@ public final class WorldMap {
         }
     }
 
-    /**
-     * A map inicializálása üres Tile objektumokkal.
-     *
-     * @param type A Tile típusa
-     */
     private void initTilemap(TileType type) {
         tilemap = new Tile[width][height];
         for (int i = 0; i < height; i++) {
@@ -220,12 +198,6 @@ public final class WorldMap {
         }
     }
 
-    /**
-     * Adott pozíción lévő Tile lecserélése.
-     *
-     * @param p    A Tile pozíciója
-     * @param type A típus, amire lecserélődik
-     */
     public void setTileAtPos(Point p, TileType type) {
         tilemap[p.getX()][p.getY()] = new Tile(type);
     }

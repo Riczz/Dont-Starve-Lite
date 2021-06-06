@@ -3,9 +3,6 @@ package dslite.world.entity.object;
 import dslite.world.entity.item.ItemType;
 import dslite.world.player.Player;
 
-/**
- * A Sapling GameObjectet leíró osztály.
- */
 public final class Sapling extends GameObject {
     protected Sapling() {
         super(ObjectType.SAPLING);
